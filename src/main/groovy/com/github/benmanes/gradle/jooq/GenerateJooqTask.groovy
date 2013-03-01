@@ -16,6 +16,7 @@
 package com.github.benmanes.gradle.jooq
 
 import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.jooq.util.GenerationTool
 import org.jooq.util.jaxb.Generator
@@ -28,7 +29,22 @@ import org.jooq.util.jaxb.Target
  */
 class GenerateJooqTask extends DefaultTask {
 
+  /** The database schema migration scripts */
+  @Input
+  String migrationDir = ''
+
+  /** The output directory for the generated sources */
+  @Input
+  String targetDir = "${project.buildDir}/generated-sources/jooq"
+
   GenerateJooqTask() {
+    if (!migrationDir.isEmpty()) {
+      inputs.dir migrationDir
+    }
+
+    outputs.dir targetDir
+    project.sourceSets.main.java.srcDirs += [ targetDir ]
+
     description = 'Generates jOOQ Java classes.'
     group = 'Build'
   }
@@ -46,11 +62,6 @@ class GenerateJooqTask extends DefaultTask {
   def updateDefaults(def configuration) {
     configuration.generator = configuration.generator ?: new Generator()
     configuration.generator.target = configuration.generator.target ?: new Target()
-
-    def target = configuration.generator.target
-    def defaultDirectory = (configuration.generator.target.directory == null)
-    if (target.directory == 'target/generated-sources/jooq') {
-      target.directory = "${project.buildDir}/generated-sources/jooq"
-    }
+    configuration.generator.target.directory = targetDir
   }
 }

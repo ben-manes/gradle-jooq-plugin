@@ -25,7 +25,14 @@ repositories {
   mavenCentral()
 }
 
-jooq {
+compileJava.dependsOn(generateJooq)
+
+generateJooq {
+  migrationDir = "${projectDir}/src/main/resources/db/migration"
+  targetDir = "${buildDir}/jooq"
+}
+
+jooq {  
   jdbc {
     url 'jdbc:mysql://localhost:3306'
     driver 'com.mysql.jdbc.Driver'
