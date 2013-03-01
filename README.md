@@ -21,10 +21,33 @@ buildscript {
     classpath 'com.github.ben-manes:gradle-jooq-plugin:0.1'
   }
 }
+
+jooq {
+  // ...
+}
 ```
 
 ## Tasks
 
 ### `generateJooq`
 
-In development!
+Executes the jOOQ [code generator](http://www.jooq.org/doc/3.0/manual/code-generation/). The
+configuration is defined as an XML DSL against  jOOQ's 
+[codegen schema](http://www.jooq.org/xsd/jooq-codegen-3.0.0.xsd).
+
+```groovy
+jooq {
+  jdbc {
+    url 'jdbc:mysql://localhost:3306'
+    driver 'com.mysql.jdbc.Driver'
+    user 'root'
+  }
+  generator {
+    database {
+      name 'org.jooq.util.mysql.MySQLDatabase'
+      inputSchema 'example'
+      includes '.*'
+    }
+  }
+}
+```
