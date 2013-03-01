@@ -9,7 +9,7 @@ dependencies {
   groovy localGroovy()
   compile gradleApi()
 
-  def jOOQ = "3.0.0-SNAPSHOT"
+  def jOOQ = "3.0.0-RC1"
   compile "org.jooq:jooq-codegen:$jOOQ"
   compile "org.jooq:jooq-meta:$jOOQ"
 

@@ -17,13 +17,6 @@ package com.github.benmanes.gradle.jooq;
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.jooq.util.jaxb.Configuration
-import org.jooq.util.jaxb.Database
-import org.jooq.util.jaxb.Generate
-import org.jooq.util.jaxb.Generator
-import org.jooq.util.jaxb.Jdbc
-import org.jooq.util.jaxb.Strategy
-import org.jooq.util.jaxb.Target
 
 /**
  * Registers the plugin's tasks.
@@ -35,20 +28,6 @@ public class JooqPlugin implements Plugin<Project> {
   @Override
   public void apply(Project project) {
     project.extensions.create("jooq", JooqExtension)
-    project.tasks.add('generateJooq', DependencyUpdatesTask)
-  }
-}
-
-public class JooqExtension extends Configuration {
-  public JooqExtension() {
-    def generator = new Generator().with {
-      database = new Database()
-      generate = new Generate()
-      strategy = new Strategy()
-      target = new Target()
-      it
-    }
-    setGenerator(generator)
-    setJdbc(new Jdbc())
+    project.tasks.add('generateJooq', GenerateJooqTask)
   }
 }

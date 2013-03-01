@@ -15,28 +15,45 @@
  */
 package com.github.benmanes.gradle.jooq
 
-import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.TaskAction
-import org.jooq.util.GenerationTool
+import groovy.xml.MarkupBuilder
 
 /**
- * A task that performs jOOQ code generation.
+ * The configuration as an XML DSL matching jOOQ's schema.
  *
  * @author Ben Manes (ben.manes@gmail.com)
  */
-class GenerateJooqTask extends DefaultTask {
+public class JooqExtension {
+  private def builder
+  private def printer
+  private def writer
+  private def done
 
-  GenerateJooqTask() {
-    description = 'Generates jOOQ Java classes.'
-    group = 'Build'
+  public JooqExtension() {
+    writer = new StringWriter()
+    printer = new IndentPrinter(writer)
+    builder = new MarkupBuilder(printer)
+    start()
   }
 
-  @TaskAction
-  def generateJooq() {
-    String xml = project.jooq.xml
-    logger.info "Using this configuration:\n{}", xml
-    def configuration = GenerationTool.load(new ByteArrayInputStream(xml.getBytes("utf8")))
+  private def start() {
+    printer.incrementIndent()
+    printer.println('<configuration>')
+    printer.printIndent()
+  }
 
-    GenerationTool.main(configuration);
+  private def end() {
+    if (!done) {
+      done = true
+      printer.println('\n</configuration>')
+    }
+  }
+
+  def methodMissing(String name, args) {
+    builder.invokeMethod(name, args)
+  }
+
+  def getXml() {
+    end()
+    writer.toString()
   }
 }
