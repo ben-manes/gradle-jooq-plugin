@@ -29,18 +29,13 @@ import org.jooq.util.jaxb.Target
  */
 class GenerateJooqTask extends DefaultTask {
 
-  /** The database schema migration scripts */
-  @Input
-  String migrationDir = '${project.buildDir}/../src/main/resources/db/migration'
-
   /** The output directory for the generated sources */
   @Input
   String targetDir = "${project.buildDir}/generated-sources/jooq"
 
   GenerateJooqTask() {
-    inputs.dir migrationDir
-
     outputs.dir targetDir
+    outputs.upToDateWhen { false }
     project.sourceSets.main.java.srcDirs += [ targetDir ]
 
     description = 'Generates jOOQ Java classes.'
