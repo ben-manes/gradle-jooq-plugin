@@ -31,16 +31,14 @@ class GenerateJooqTask extends DefaultTask {
 
   /** The database schema migration scripts */
   @Input
-  String migrationDir = ''
+  String migrationDir = '${project.buildDir}/../src/main/resources/db/migration'
 
   /** The output directory for the generated sources */
   @Input
   String targetDir = "${project.buildDir}/generated-sources/jooq"
 
   GenerateJooqTask() {
-    if (!migrationDir.isEmpty()) {
-      inputs.dir migrationDir
-    }
+    inputs.dir migrationDir
 
     outputs.dir targetDir
     project.sourceSets.main.java.srcDirs += [ targetDir ]

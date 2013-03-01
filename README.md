@@ -47,8 +47,8 @@ Executes the jOOQ [code generator](http://www.jooq.org/doc/3.0/manual/code-gener
 
 ```groovy
 generateJooq {
-  // An input dependency on the migration scripts directory can be specified to invalidate the
-  // up-to-date check. By default this option is not set.
+  // An input dependency on the migration scripts directory can be specified
+  // to invalidate the up-to-date check.
   migrationDir = "${projectDir}/src/main/resources/db/migration"
 
   // The output directory for the generated sources; default below

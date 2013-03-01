@@ -2,17 +2,23 @@ import groovy.xml.MarkupBuilder
 
 apply plugin: 'java'
 apply plugin: 'jooq'
+apply plugin: 'flyway'
 
 defaultTasks 'generateJooq'
 
 buildscript {
   repositories {
+    maven {
+      url 'http://katta.github.com/repository'
+    }
     mavenLocal()
     mavenCentral()
   }
 
   dependencies {
+    classpath 'com.h2database:h2:1.3.167'
     classpath 'mysql:mysql-connector-java:5.1.20'
+    classpath 'org.katta.gradle.api.plugins:flyway:1.3'
     classpath 'com.github.ben-manes:gradle-jooq-plugin:latest.integration'
   }
 }
@@ -25,11 +31,16 @@ repositories {
   mavenCentral()
 }
 
+flywayInit.dependsOn(flywayClean)
+generateJooq.dependsOn(flywayInit)
 compileJava.dependsOn(generateJooq)
 
-generateJooq {
-  migrationDir = "${projectDir}/src/main/resources/db/migration"
-  targetDir = "${buildDir}/jooq"
+flyway {
+  url = 'jdbc:mysql://localhost:3306/example'
+  driver = 'com.mysql.jdbc.Driver'
+  user = 'root'
+  password = ''
+  locations = "src/main/resources/db/migration"
 }
 
 jooq {  
@@ -41,13 +52,12 @@ jooq {
   generator {
     database {
       name 'org.jooq.util.mysql.MySQLDatabase'
-      inputSchema 'amp'
+      inputSchema 'example'
       includes '.*'
-      
-      schema {
-        inputSchema 'input'
-        outputSchema 'output'
-      }
+    }
+    schema {
+      inputSchema 'input'
+      outputSchema 'output'
     }
   }
 }
