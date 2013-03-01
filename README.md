@@ -23,7 +23,7 @@ buildscript {
 }
 
 jooq {
-  // ...
+  // configuration
 }
 ```
 
@@ -33,7 +33,7 @@ jooq {
 
 Executes the jOOQ [code generator](http://www.jooq.org/doc/3.0/manual/code-generation/). The
 configuration is defined as an XML DSL against  jOOQ's 
-[codegen schema](http://www.jooq.org/xsd/jooq-codegen-3.0.0.xsd).
+[codegen schema](http://www.jooq.org/xsd/jooq-codegen-3.0.0.xsd) and logged at `info` level.
 
 ```groovy
 jooq {

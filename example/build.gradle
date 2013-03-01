@@ -1,5 +1,6 @@
 import groovy.xml.MarkupBuilder
 
+apply plugin: 'java'
 apply plugin: 'jooq'
 
 defaultTasks 'generateJooq'
@@ -11,9 +12,17 @@ buildscript {
   }
 
   dependencies {
-    classpath "mysql:mysql-connector-java:5.1.20"
+    classpath 'mysql:mysql-connector-java:5.1.20'
     classpath 'com.github.ben-manes:gradle-jooq-plugin:latest.integration'
   }
+}
+
+dependencies {
+  compile "org.jooq:jooq:3.0.0-RC1"
+}
+
+repositories {
+  mavenCentral()
 }
 
 jooq {

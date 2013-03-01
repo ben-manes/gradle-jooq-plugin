@@ -27,7 +27,8 @@ public class JooqPlugin implements Plugin<Project> {
 
   @Override
   public void apply(Project project) {
-    project.extensions.create("jooq", JooqExtension)
+    project.extensions.create('jooq', JooqExtension)
     project.tasks.add('generateJooq', GenerateJooqTask)
+    project.sourceSets.main.java.srcDirs += [ "${project.buildDir}/generated-sources/jooq" ]
   }
 }

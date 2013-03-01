@@ -18,6 +18,8 @@ package com.github.benmanes.gradle.jooq
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 import org.jooq.util.GenerationTool
+import org.jooq.util.jaxb.Generator
+import org.jooq.util.jaxb.Target
 
 /**
  * A task that performs jOOQ code generation.
@@ -33,10 +35,22 @@ class GenerateJooqTask extends DefaultTask {
 
   @TaskAction
   def generateJooq() {
-    String xml = project.jooq.xml
-    logger.info "Using this configuration:\n{}", xml
-    def configuration = GenerationTool.load(new ByteArrayInputStream(xml.getBytes("utf8")))
+    def xml = project.jooq.xml
+    logger.info 'Using this configuration:\n{}', xml
+    def configuration = GenerationTool.load(new ByteArrayInputStream(xml.getBytes('utf8')))
 
+    updateDefaults(configuration)
     GenerationTool.main(configuration);
+  }
+
+  def updateDefaults(def configuration) {
+    configuration.generator = configuration.generator ?: new Generator()
+    configuration.generator.target = configuration.generator.target ?: new Target()
+
+    def target = configuration.generator.target
+    def defaultDirectory = (configuration.generator.target.directory == null)
+    if (target.directory == 'target/generated-sources/jooq') {
+      target.directory = "${project.buildDir}/generated-sources/jooq"
+    }
   }
 }
