@@ -26,7 +26,7 @@ buildscript {
 jooq {
   jdbc {
     url 'jdbc:mysql://localhost:3306'
-    driver = 'com.mysql.jdbc.Driver'
+    driver 'com.mysql.jdbc.Driver'
     user 'root'
   }
   generator {
