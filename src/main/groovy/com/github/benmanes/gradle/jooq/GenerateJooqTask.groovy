@@ -16,7 +16,6 @@
 package com.github.benmanes.gradle.jooq
 
 import org.gradle.api.DefaultTask
-import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.jooq.util.GenerationTool
 import org.jooq.util.jaxb.Generator
@@ -28,32 +27,40 @@ import org.jooq.util.jaxb.Target
  * @author Ben Manes (ben.manes@gmail.com)
  */
 class GenerateJooqTask extends DefaultTask {
-
-  /** The output directory for the generated sources */
-  @Input
-  String targetDir = "${project.buildDir}/generated-sources/jooq"
+  def configuration
 
   GenerateJooqTask() {
-    outputs.dir targetDir
-    project.sourceSets.main.java.srcDirs += [ targetDir ]
-
     description = 'Generates jOOQ Java classes.'
     group = 'Build'
+
+    project.gradle.projectsEvaluated {
+      parseConfiguration()
+      outputs.dir configuration.generator.target.directory
+      project.sourceSets.main.java.srcDirs += [ configuration.generator.target.directory ]
+    }
   }
 
   @TaskAction
   def generateJooq() {
-    def xml = project.jooq.xml
-    logger.info 'Using this configuration:\n{}', xml
-    def configuration = GenerationTool.load(new ByteArrayInputStream(xml.getBytes('utf8')))
-
-    updateDefaults(configuration)
+    logger.info 'Using this configuration:\n{}', project.jooq.xml
     GenerationTool.main(configuration);
   }
 
-  def updateDefaults(def configuration) {
+  def parseConfiguration() {
+    configuration = GenerationTool.load(new ByteArrayInputStream(project.jooq.xml.getBytes('utf8')))
+    if (useDefaultTargetDirectory()) {
+      gradleTargertDir()
+    }
+  }
+
+  def useDefaultTargetDirectory() {
+    def parsed = new XmlParser().parseText(project.jooq.xml)
+    parsed.generator.target.directory.text().isEmpty()
+  }
+
+  def gradleTargertDir() {
     configuration.generator = configuration.generator ?: new Generator()
     configuration.generator.target = configuration.generator.target ?: new Target()
-    configuration.generator.target.directory = targetDir
+    configuration.generator.target.directory = "${project.buildDir}/generated-sources/jooq"
   }
 }

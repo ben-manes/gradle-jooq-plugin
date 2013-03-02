@@ -6,9 +6,11 @@ as part of the Gradle build.
 
 ## Usage
 
-This plugin is hosted on the Maven Central Repository. The configuration is defined as an XML DSL 
-based on jOOQ's [codegen schema](http://www.jooq.org/xsd/jooq-codegen-3.0.0.xsd). All actions are
-logged at the `info` level.
+This plugin is hosted on the Maven Central Repository. All actions are logged at the `info` level.
+
+The configuration is defined as an XML DSL based on jOOQ's 
+[codegen schema](http://www.jooq.org/xsd/jooq-codegen-3.0.0.xsd). The default target directory is
+updated to reflect Gradle's build directory (`build/generated-sources/jooq`).
 
 ```groovy
 apply plugin: 'jooq'
@@ -44,10 +46,3 @@ jooq {
 ### `generateJooq`
 
 Executes the jOOQ [code generator](http://www.jooq.org/doc/3.0/manual/code-generation/).
-
-```groovy
-generateJooq {
-  // The output directory for the generated sources; default below
-  targetDir = "${buildDir}/generated-sources/jooq"
-}
-```
