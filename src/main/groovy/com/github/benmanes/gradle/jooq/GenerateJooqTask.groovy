@@ -35,7 +35,6 @@ class GenerateJooqTask extends DefaultTask {
 
   GenerateJooqTask() {
     outputs.dir targetDir
-    outputs.upToDateWhen { false }
     project.sourceSets.main.java.srcDirs += [ targetDir ]
 
     description = 'Generates jOOQ Java classes.'

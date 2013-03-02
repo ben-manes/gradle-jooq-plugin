@@ -52,6 +52,18 @@ flyway {
   password = ''
 }
 
+flywayInit {
+  outputs.upToDateWhen {
+    file("${buildDir}/db").exists()
+  }
+}
+
+generateJooq {
+  outputs.upToDateWhen {
+    !flywayMigrate.didWork
+  }
+}
+
 jooq {  
   jdbc {
     url "jdbc:h2:${buildDir}/db/example"
@@ -62,7 +74,7 @@ jooq {
     database {
       name 'org.jooq.util.h2.H2Database'
       inputSchema 'PUBLIC'
-      includes 'USER'
+      includes '.*'
     }
     generate { 
       deprecated false
