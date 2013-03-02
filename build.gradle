@@ -1,9 +1,18 @@
-apply plugin: 'signing'
 apply plugin: 'groovy'
-apply plugin: 'maven'
+apply plugin: 'nexus'
 
 group = 'com.github.ben-manes'
 version = '0.1'
+
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.2'
+  }
+}
 
 dependencies {
   groovy localGroovy()
@@ -17,9 +26,6 @@ dependencies {
 }
 
 repositories {
-  maven {
-    url = "https://oss.sonatype.org/content/repositories/snapshots"
-  }
   mavenCentral()
 }
 
@@ -34,78 +40,43 @@ jar {
   }
 }
 
-task sourcesJar(type: Jar) {
-  classifier = 'sources'
-  from sourceSets.main.allSource
-}
-
 task groovydocJar(type: Jar, dependsOn: groovydoc) {
   classifier = 'javadoc'
   from groovydoc.destinationDir
 }
 
 artifacts {
-  archives sourcesJar, groovydocJar
+  archives groovydocJar
 }
 
-ext.pomConfiguration = {
-  name 'Gradle jOOQ plugin'
-  description 'jOOQ codegen for Gradle.'
-  url 'https://github.com/ben-manes/gradle-jooq-plugin'
-  inceptionYear '2013'
-
-  scm {
+modifyPom {
+  project {
+    name 'Gradle jOOQ plugin'
+    description 'jOOQ codegen for Gradle.'
     url 'https://github.com/ben-manes/gradle-jooq-plugin'
-    connection 'scm:https://ben-manes@github.com/ben-manes/gradle-jooq-plugin.git'
-    developerConnection 'scm:git://github.com/ben-manes/gradle-jooq-plugin.git'
-  }
-
-  licenses {
-    license {
-      name 'The Apache Software License, Version 2.0'
-      url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-      distribution 'repo'
+    inceptionYear '2013'
+  
+    scm {
+      url 'https://github.com/ben-manes/gradle-jooq-plugin'
+      connection 'scm:https://ben-manes@github.com/ben-manes/gradle-jooq-plugin.git'
+      developerConnection 'scm:git://github.com/ben-manes/gradle-jooq-plugin.git'
     }
-  }
-
-  developers {
-    developer {
-      id 'ben-manes'
-      name 'Ben Manes'
-      email 'ben.manes@gmail.com'
-    }
-  }
-}
-
-install {
-  repositories.mavenInstaller {
-    pom.project pomConfiguration
-  }
-}
-
-signing {
-  required { gradle.taskGraph.hasTask(uploadArchives) && !version.endsWith('SNAPSHOT') }
-  sign configurations.archives
-}
-
-uploadArchives {
-  repositories.mavenDeployer {
-    beforeDeployment { deployment ->
-      signing.signPom(deployment)
-    }
-
-    name = 'mavenCentralReleaseDeployer'
-
-    doFirst {
-      repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
-        authentication(
-          userName: project.mavenCentralUsername,
-          password: project.mavenCentralPassword)
-        releases(updatePolicy: 'always')
+  
+    licenses {
+      license {
+        name 'The Apache Software License, Version 2.0'
+        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+        distribution 'repo'
       }
     }
-
-    pom.project pomConfiguration
+  
+    developers {
+      developer {
+        id 'ben-manes'
+        name 'Ben Manes'
+        email 'ben.manes@gmail.com'
+      }
+    }
   }
 }
 
