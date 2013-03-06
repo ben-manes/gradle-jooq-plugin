@@ -21,6 +21,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import org.jooq.SQLDialect;
+import org.jooq.conf.Settings;
 import org.jooq.impl.Executor;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -32,13 +33,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public final class JooqModule extends AbstractModule {
   private final SQLDialect dialect;
+  private final Settings setting;
 
   public JooqModule() {
-    this.dialect = checkNotNull(SQLDialect.H2);
+    this(SQLDialect.H2, new Settings().withRenderSchema(false));
   }
 
-  public JooqModule(SQLDialect dialect) {
+  public JooqModule(SQLDialect dialect, Settings setting) {
     this.dialect = checkNotNull(dialect);
+    this.setting = checkNotNull(setting);
   }
 
   @Override
@@ -46,6 +49,6 @@ public final class JooqModule extends AbstractModule {
 
   @Provides @Singleton
   Executor providesExecutor(DataSource dataSource) {
-    return new Executor(dataSource, dialect);
+    return new Executor(dataSource, dialect, setting);
   }
 }
