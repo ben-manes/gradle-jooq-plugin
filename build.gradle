@@ -2,7 +2,7 @@ apply plugin: 'groovy'
 apply plugin: 'nexus'
 
 group = 'com.github.ben-manes'
-version = '0.2'
+version = '0.3'
 
 buildscript {
   repositories {
@@ -22,7 +22,7 @@ dependencies {
   groovy localGroovy()
   compile gradleApi()
 
-  def jOOQ = "3.0.0-RC1"
+  def jOOQ = "3.0.0-RC2"
   compile "org.jooq:jooq-codegen:$jOOQ"
   compile "org.jooq:jooq-meta:$jOOQ"
 
