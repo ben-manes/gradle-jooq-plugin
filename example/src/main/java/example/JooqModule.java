@@ -20,9 +20,10 @@ import javax.sql.DataSource;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.conf.Settings;
-import org.jooq.impl.Executor;
+import org.jooq.impl.DSL;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -48,7 +49,7 @@ public final class JooqModule extends AbstractModule {
   protected void configure() {}
 
   @Provides @Singleton
-  Executor providesExecutor(DataSource dataSource) {
-    return new Executor(dataSource, dialect, setting);
+  DSLContext providesDSLContext(DataSource dataSource) {
+    return DSL.using(dataSource, dialect, setting);
   }
 }

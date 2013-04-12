@@ -19,9 +19,9 @@ import java.util.List;
 
 import com.google.inject.Inject;
 import example.generated.tables.records.UserRecord;
+import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
-import org.jooq.impl.Executor;
 import org.modelmapper.ModelMapper;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -38,7 +38,7 @@ import static org.hamcrest.Matchers.is;
  */
 @Guice(modules = {JooqModule.class, H2Module.class})
 public final class JooqTest {
-  @Inject Executor db;
+  @Inject DSLContext db;
   @Inject ModelMapper mapper;
   RecordMapper<Record, User> recordMapper;
 

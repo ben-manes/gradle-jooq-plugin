@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-  compile 'org.jooq:jooq:3.0.0-RC1'
+  compile 'org.jooq:jooq:3.0.0-RC3'
   compile 'com.google.guava:guava:14.0'
   compile 'com.google.inject:guice:3.0'
 

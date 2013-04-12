@@ -33,7 +33,7 @@ class GenerateJooqTask extends DefaultTask {
     description = 'Generates jOOQ Java classes.'
     group = 'Build'
 
-    project.gradle.projectsEvaluated {
+    project.afterEvaluate {
       parseConfiguration()
       outputs.dir configuration.generator.target.directory
       project.sourceSets.main.java.srcDirs += [ configuration.generator.target.directory ]
