@@ -19,8 +19,8 @@ repositories {
 }
 
 dependencies {
-  groovy localGroovy()
   compile gradleApi()
+  compile localGroovy()
 
   def jOOQ = "3.0.0"
   compile "org.jooq:jooq-codegen:$jOOQ"
@@ -81,5 +81,5 @@ modifyPom {
 }
 
 task wrapper(type: Wrapper, description: 'Generates the gradle wrapper.') {
-  gradleVersion = '1.4'
+  gradleVersion = '1.6-rc-1'
 }
