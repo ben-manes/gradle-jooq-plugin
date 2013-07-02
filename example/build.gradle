@@ -10,7 +10,7 @@ buildscript {
 
   dependencies {
     classpath 'com.h2database:h2:1.3.170'
-    classpath 'com.github.ben-manes:gradle-flyway-plugin:0.2'
+    classpath 'com.github.ben-manes:gradle-flyway-plugin:0.6'
     classpath 'com.github.ben-manes:gradle-jooq-plugin:latest.integration'
   }
 }
@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-  compile 'org.jooq:jooq:3.0.0-RC3'
+  compile 'org.jooq:jooq:3.1.0'
   compile 'com.google.guava:guava:14.0'
   compile 'com.google.inject:guice:3.0'
 
@@ -41,9 +41,13 @@ generateJooq.dependsOn(flywayMigrate)
 compileJava.dependsOn(generateJooq)
 
 flyway {
-  url = "jdbc:h2:${buildDir}/db/flyway"
-  schemas = [ 'example' ]
-  user 'su'
+  databases {
+    main {
+      url = "jdbc:h2:${buildDir}/db/flyway"
+      schemas = [ 'example' ]
+      user = 'su'
+    }
+  }
 }
 
 generateJooq {

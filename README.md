@@ -21,7 +21,7 @@ buildscript {
   }
   
   dependencies {
-    classpath 'com.github.ben-manes:gradle-jooq-plugin:0.5'
+    classpath "org.jooq:jooq-codegen-gradle:${versions.jOOQ}"
   }
 }
 

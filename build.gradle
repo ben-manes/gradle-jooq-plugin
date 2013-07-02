@@ -2,7 +2,7 @@ apply plugin: 'groovy'
 apply plugin: 'nexus'
 
 group = 'com.github.ben-manes'
-version = '0.5'
+version = '0.6'
 
 buildscript {
   repositories {
@@ -22,7 +22,7 @@ dependencies {
   compile gradleApi()
   compile localGroovy()
 
-  def jOOQ = "3.0.0"
+  def jOOQ = "3.1.0"
   compile "org.jooq:jooq-codegen:$jOOQ"
   compile "org.jooq:jooq-meta:$jOOQ"
 
@@ -81,5 +81,5 @@ modifyPom {
 }
 
 task wrapper(type: Wrapper, description: 'Generates the gradle wrapper.') {
-  gradleVersion = '1.6-rc-1'
+  gradleVersion = '1.6'
 }
