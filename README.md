@@ -1,4 +1,6 @@
-# Gradle jOOQ Plugin
+# Gradle jOOQ Plugin (<b>deprecated</b>)
+
+<b>jOOQ 3.2 includes an official plugin based on this one.</b>
 
 [jOOQ](http://www.jooq.org) generates a simple Java representation of your database schema.
 Every table, view, stored procedure, enum, UDT is a class. This plugin performs code generation
